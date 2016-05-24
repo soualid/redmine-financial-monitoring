@@ -1,0 +1,24 @@
+<h2><%=l(:label_settings)%></h2>
+
+
+<%
+tabs = project_settings_tabs
+
+if @project.module_enabled?("financial_monitoring")
+
+    @charts_settings = DayPerProject.find_or_create_by(project_id: @project.id)
+    
+    tabs.push({
+      :name => 'charts', 
+      :action => :manage_project_charts, 
+      :partial => 'projects/settings/manage_charts', 
+      :label => 'financial_monitoring'
+    })
+
+end
+%>
+<%= render_tabs tabs %>
+
+<% html_title(l(:label_settings)) -%>
+
+

@@ -1,0 +1,61 @@
+<% content_for :header_tags do %>
+    <%= javascript_include_tag 'morris.min', :plugin => 'financialmonitoring' %>
+    <%= javascript_include_tag 'raphael-min', :plugin => 'financialmonitoring' %>
+    <%= stylesheet_link_tag 'morris', :plugin => 'financialmonitoring' %>
+<% end %>
+
+
+<h2><%= l("budget_consumption") %></h2>
+<h3><%= @project.name %></h3>
+
+
+<div id="chart" style="height: 450px;">
+
+</div>
+
+
+<script type="text/javascript">
+var datas = [
+  <% 
+  current = 0 
+  prev = 0 
+  @stats.each do |stat| 
+    current += stat[2] 
+    prev += @charts_settings.day != nil ? @charts_settings.day : 0 %>
+    { y: '<%= stat[0] %>-<%= stat[1].to_s.rjust(2, '0') %>-01', 
+      a: '<%= current %>',
+      b: '<%= prev %>' },
+  <% end %>  
+];
+var prevPerMonth = <%= @charts_settings.day != nil && @charts_settings.day != '' ? @charts_settings.day : 0 %>;
+if (datas.length < 12) {
+  var date = null;
+  if (datas.length) {
+    date = new Date(datas[datas.length-1].y), latestPrev = datas[datas.length-1].b;
+  } else {
+    date = new Date(), latestPrev = 0;
+  }
+  
+
+  for (var i=datas.length; i<12; i++) {
+    date = new Date(date.setMonth(date.getMonth()+1));
+    
+    var dateAsString = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDay(),
+        latestPrev = Number(latestPrev) + Number(prevPerMonth);
+   
+    datas.push({
+      y: dateAsString,
+      b: latestPrev
+    });
+  }
+}
+new Morris.Line({
+  element: 'chart',
+  data: datas,
+  xkey: 'y',
+  ykeys: ['a','b'],
+  labels: [ '<%= l("consumed") %>', '<%= l("predicted") %>' ],
+  lineWidth: [2,1],
+  hideHover: false
+});
+</script>

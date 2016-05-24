@@ -1,0 +1,9 @@
+# English strings go here for Rails i18n
+fr:
+  financial_monitoring: "Suivi financier"
+  hour_per_month: "Heures prévues par mois"
+  contract_start: "Date de début du contrat"
+  status_to_include: "Statuts à inclure"
+  budget_consumption: "Consommation du budget en heures"
+  consumed: "Consommé"
+  predicted: "Prévisionnel"

@@ -1,0 +1,9 @@
+# English strings go here for Rails i18n
+en:
+  financial_monitoring: "Financial Monitoring"
+  hour_per_month: "Work prevision per month (hours)"
+  contract_start: "Contract start"
+  status_to_include: "Status to include"
+  budget_consumption: "Budget consumption"
+  consumed: "Consummed"
+  predicted: "Predicted"
