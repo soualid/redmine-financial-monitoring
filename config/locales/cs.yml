@@ -1,0 +1,9 @@
+# Czech translation of Financial Monitoring plugin
+en:
+  financial_monitoring: "Finanční monitoring"
+  hour_per_month: "Plánovaný počet hodin měsíčně"
+  contract_start: "Začátek kontraktu"
+  status_to_include: "Stavy k zahrnutí"
+  budget_consumption: "Využití rozpočtu"
+  consumed: "Využito"
+  predicted: "Předpovězeno"
