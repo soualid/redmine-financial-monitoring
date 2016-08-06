@@ -10,6 +10,6 @@ Redmine::Plugin.register :financialmonitoring do
     permission :view_financial, :charts => :index
   end
 
-  menu :project_menu, :financial_monitoring, { :controller => 'charts', :action => 'index' }, :caption => :financial_monitoring, :after => :activity, :param => :project_id
+  menu :project_menu, :charts, { :controller => 'charts', :action => 'index' }, :caption => :financial_monitoring, :after => :activity, :param => :project_id
 
 end
