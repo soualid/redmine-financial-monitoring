@@ -1,29 +1,27 @@
-<% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'financialmonitoring', :plugin => 'financialmonitoring' %>
-<% end %>
-
+<div id="financial_monitoring_settings">
 <%= form_for @charts_settings, url: "./charts/update", method: "post" do |f| %>
-  <%= f.hidden_field :project_id %><br />  
-  <div class="form_block">
-  <%= f.label :day, l("status_to_include") %><br />  
-  <select name="day_per_project[included_status_ids][]" multiple="multiple">
-  <%= 
-    selection = @charts_settings.included_status != nil ? @charts_settings.included_status.split(';') : nil;
-    options_from_collection_for_select(IssueStatus.all, :id, :name, {:selected => selection})
-  
-  %>
-  </select>
-  </div>
+    <%= error_messages_for 'charts_settings' %>
 
-  <div class="form_block">
-  <%= f.label :day, l("hour_per_month") %><br />  
-  <%= f.text_field :day %><br />  
-  </div>
+    <%= f.hidden_field :project_id %>
 
-  <div class="form_block">
-  <%= f.label :start_date, l("contract_start") %><br />  
-  <%= f.date_field :start_date %>
-  </div>
+    <b><%= f.label :day, l("status_to_include") %></b>
+    <p><select name="day_per_project[included_status_ids][]" multiple="multiple" id="financial_monitoring_select">
+    <%=
+      selection = @charts_settings.included_status != nil ? @charts_settings.included_status.split(';') : nil;
+      options_from_collection_for_select(IssueStatus.all, :id, :name, {:selected => selection})
+    %>
+    </select></p>
 
-<%= submit_tag l("update") %>
+    <b><%= f.label :day, l("hour_per_month") %></b>
+    <p><%= f.number_field :day, :step => 1 %></p>
+
+    <b><%= f.label :start_date, l("contract_start") %></b>
+    <p><%= f.date_field :start_date %></p>
+
+    <%= submit_tag l(:update) %>
 <% end %>
+</div>
+<script type="text/javascript">
+var select = document.getElementById('financial_monitoring_select');
+select.size = select.length;
+</script>
