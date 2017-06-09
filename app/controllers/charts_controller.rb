@@ -28,9 +28,32 @@ class ChartsController < ApplicationController
     query += "GROUP BY YEAR(GREATEST(start_date,created_on)), MONTH(GREATEST(start_date,created_on)) \
       ORDER BY YEAR(GREATEST(start_date,created_on)), MONTH(GREATEST(start_date,created_on))"
     
-    @stats = connection.execute(query) 
-    
+    @stats = connection.execute(query).to_a
 
+    slotsToAdd = []
+    previousYear = nil
+    previousMonth = nil
+    offset = 0 
+    @stats.each_with_index do |stat, index|
+      if previousYear != nil
+        while (stat[1] > (previousMonth + 1) || stat[0] > previousYear) do
+          # we just spot an empty slot, fill it with a blank entry to avoid errors in calculations
+          # https://github.com/soualid/redmine-financial-monitoring/issues/2
+          slotsToAdd << [(index+offset), [previousYear, (previousMonth + 1), 0]]
+          previousMonth = previousMonth + 1
+          offset = offset + 1
+          if previousMonth > 12
+            previousMonth = 1
+            previousYear = previousYear + 1
+          end
+        end
+      end
+      previousYear = stat[0]
+      previousMonth = stat[1]
+    end
+    slotsToAdd.each do |slot|
+      @stats.insert(slot[0], slot[1])
+    end
   end
 
   def manage
@@ -55,3 +78,4 @@ class ChartsController < ApplicationController
     @project = Project.find(params[:project_id])
   end
 end
+
